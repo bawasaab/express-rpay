@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		<%= title %>
+	</title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+
+	<script>
+		let orderId;
+		let razorpay_payment_id;
+		let options = {
+			"key": "rzp_test_48cTOMEXh9OIUO", // Enter the Key ID generated from the Dashboard
+			"amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+			"currency": "INR",
+			"name": "Acme Corp",
+			"description": "Test Transaction",
+			"image": "https://example.com/your_logo",
+			"order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+			"handler": function (response){
+
+				console.log('response', response);
+				console.log('response.razorpay_payment_id', response.razorpay_payment_id);
+				razorpay_payment_id = response.razorpay_payment_id;
+			},
+			// "callback_url": "http://localhost:3000/razorpay/callbackUrl",
+			"prefill": {
+				"name": "Gaurav Kumar",
+				"email": "gaurav.kumar@example.com",
+				"contact": "7508498585"
+			},
+			"notes": {
+				"address": "Razorpay Corporate Office"
+			},
+			"theme": {
+				"color": "#3399cc"
+			}
+		};
+	</script>
+</head>
+
+<body>
+	<h1>
+		<%= title %>
+	</h1>
+	<p>Welcome to <%= title %></p>
+
+	<p><button id="rzp-button1">Pay</button></p>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+	<script>
+
+		$(function() {
+			
+			$.ajax({
+				url: 'http://localhost:3000/razorpay/order',
+				method: 'POST',
+				dataType: 'JSON',
+				data: {
+					amount: 500,
+					currency: "INR",
+					receipt: "order_rcptid_11"
+				},
+				success: function (retdata) {
+					console.log(retdata);
+					orderId = retdata.id;
+					options.order_id = orderId;
+				},
+				error: function (e) {
+					console.log(e);
+				}
+			});
+		});
+
+		$('#rzp-button1').on('click', ($event) => {
+			var rzp1 = new Razorpay(options);
+			rzp1.open();
+    		$event.preventDefault();
+		});
+	</script>
+</body>
+
+</html>
