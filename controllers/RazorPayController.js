@@ -48,15 +48,23 @@ module.exports = class RazorPayController {
         .then( (paymentDocument) => {
             console.log('paymentDocument', paymentDocument);
             if( paymentDocument.status == 'captured' ) {
-                res.send('Payment Successfull');
+                res.send({
+                    status: true,
+                    msg: 'Payment Successfull'
+                });
+            } else {
+                res.send({
+                    status: false,
+                    msg: 'Payment un-successfull'
+                });
             }
         } )
         .catch( (ex) => {
             console.log(ex);
+            res.send({
+                order: req.body
+            });
         } );
-        // res.send({
-        //     order: req.body
-        // });
     }
 
     paymentSuccessfull( req, res, next ) {
