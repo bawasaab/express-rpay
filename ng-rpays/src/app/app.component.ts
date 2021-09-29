@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WindowRefService } from './services/window-ref.service';
 import { RazorpayService } from ".//services/razorpay.service";
 
