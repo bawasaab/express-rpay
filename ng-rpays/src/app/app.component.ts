@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WindowRefService } from './services/window-ref.service';
-import { RazorpayService } from ".//services/razorpay.service";
+import { RazorpayService } from "./services/razorpay.service";
 
 @Component({
 	selector: 'app-root',
@@ -10,7 +10,11 @@ import { RazorpayService } from ".//services/razorpay.service";
 export class AppComponent implements OnInit {
 	title = 'ng-rpays';
 	order_id: any;
-	razorpay_payment_id: any;
+	transaction_detail: object = {
+		razorpay_order_id: "",
+		razorpay_payment_id: "",
+		razorpay_signature: ""
+	};
 
 	constructor(
 		private winRef: WindowRefService,
@@ -74,7 +78,13 @@ export class AppComponent implements OnInit {
 			} else {
 
 				options.response = response;
-				this.razorpay_payment_id = response.razorpay_payment_id;
+
+				this.transaction_detail = {
+					razorpay_order_id: response.razorpay_order_id,
+					razorpay_payment_id: response.razorpay_payment_id,
+					razorpay_signature: response.razorpay_signature
+				};
+
 				console.log('response', response);
 				console.log('options', options);
 				// call your backend api to verify payment signature & capture transaction
@@ -91,7 +101,7 @@ export class AppComponent implements OnInit {
 
 	isPaymentSuccessfull() {
 
-		this.razorpayService.isPaymentSuccessfull( this.razorpay_payment_id ).subscribe(
+		this.razorpayService.isPaymentSuccessfull( this.transaction_detail ).subscribe(
 			async (result) => {
 				console.log('result', result);
 			},

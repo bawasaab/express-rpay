@@ -33,14 +33,11 @@ export class RazorpayService {
 		);
 	}
 
-	isPaymentSuccessfull( razorpay_payment_id: any ): Observable<any> {
+	isPaymentSuccessfull( transaction_detail: any ): Observable<any> {
 
-		let in_data = {
-			razorpay_payment_id: razorpay_payment_id
-		};
 		let url = `http://localhost:3000/razorpay/is-payment-successfull`;
 		return this.httpClient
-			.post(url, in_data)
+			.post(url, transaction_detail)
 			.pipe(
 				map((e: any) => e),
 				catchError((e: Response) => throwError(e))
