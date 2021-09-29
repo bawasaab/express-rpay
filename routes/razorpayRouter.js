@@ -8,6 +8,6 @@ const RazorPayControllerObj = new RazorPayController();
 router.get('/', RazorPayControllerObj.init);
 router.post('/order', RazorPayControllerObj.order);
 router.post('/callbackUrl', RazorPayControllerObj.callbackUrl);
-router.post('/payment-successfull', RazorPayControllerObj.paymentSuccessfull);
+router.post('/is-payment-successfull', RazorPayControllerObj.paymentSuccessfull);
 
 module.exports = router;

@@ -46,7 +46,7 @@ module.exports = class RazorPayController {
         $this.RazorpayObj.payments
         .fetch( req.body.razorpay_payment_id )
         .then( (paymentDocument) => {
-            console.log(paymentDocument);
+            console.log('paymentDocument', paymentDocument);
             if( paymentDocument.status == 'captured' ) {
                 res.send('Payment Successfull');
             }
@@ -61,6 +61,24 @@ module.exports = class RazorPayController {
 
     paymentSuccessfull( req, res, next ) {
 
-        
+        $this.RazorpayObj.payments
+        .fetch( req.body.razorpay_payment_id )
+        .then( (paymentDocument) => {
+            console.log('paymentDocument', paymentDocument);
+            if( paymentDocument.status == 'captured' ) {
+                res.send({
+                    status: true,
+                    msg: 'Payment Successfull'
+                });
+            } else {
+                res.send({
+                    status: false,
+                    msg: 'Payment un-successfull'
+                });
+            }
+        } )
+        .catch( (ex) => {
+            console.log(ex);
+        } );
     }
 }
