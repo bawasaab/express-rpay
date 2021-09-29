@@ -67,12 +67,19 @@ export class AppComponent implements OnInit {
 			},
 		};
 		options.handler = ((response: any, error: any) => {
-		  options.response = response;
-		  this.razorpay_payment_id = response.razorpay_payment_id;
-		  console.log('response', response);
-		  console.log('options', options);
-		  // call your backend api to verify payment signature & capture transaction
-		  this.isPaymentSuccessfull();
+
+			if( error ) {
+
+				console.log('error', error);
+			} else {
+
+				options.response = response;
+				this.razorpay_payment_id = response.razorpay_payment_id;
+				console.log('response', response);
+				console.log('options', options);
+				// call your backend api to verify payment signature & capture transaction
+				this.isPaymentSuccessfull();
+			}
 		});
 		options.modal.ondismiss = (() => {
 			// handle the case when user closes the form while transaction is in progress
